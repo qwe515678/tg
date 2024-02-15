@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <motion.div onClick={() => setCounter(counter + 1)} whileTap={{ scale: .9 }} className="flex justify-center items-center min-h-screen flex-col gap-5">
       <Image src={`/coin.svg`} width={500} height={500} alt="coin" draggable={false} className="select-none" />
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-6xl">{counter}</motion.p>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-6xl text-white">{counter}</motion.p>
     </motion.div>
   );
 }

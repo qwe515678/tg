@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@vkruglikov/react-telegram-web-app": "^2.1.9",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18"

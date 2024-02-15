@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import Head from "next/head";
+import Script from 'next/script'
 const inter = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,13 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-      </Head>
+
+      <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
+
       <body className={inter.className}>
-          <div className=" px-4">
-            {children}
-          </div>
+        <div className=" px-4">
+          {children}
+        </div>
 
       </body>
     </html>

@@ -15,14 +15,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
 
-      <Script src="https://telegram.org/js/telegram-web-app.js"></Script>
+      <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive"></Script>
 
-      <body className={inter.className}>
-        <div className=" px-4">
+      <body className={inter.className + ' text-white'} >
+        <div className="px-4">
           {children}
         </div>
+
 
       </body>
     </html>

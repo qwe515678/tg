@@ -1,12 +1,12 @@
 'use client'
 
 import { ReactNode } from "react"
-import { WebAppProvider, MainButton, BackButton } from '@vkruglikov/react-telegram-web-app';
+import { AnimatePresence, motion } from "framer-motion"
 
-interface Itemplate { children: ReactNode }
-
-export default function template({ children }: Itemplate) {
+export default function Page({ children }: { children: ReactNode }) {
     return (
-        <WebAppProvider>{children}</WebAppProvider>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
+            {children}
+        </motion.div>
     )
 }

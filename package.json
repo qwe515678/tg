@@ -10,10 +10,19 @@
   },
   "dependencies": {
     "-": "^0.0.1",
+    "@radix-ui/react-progress": "^1.0.3",
     "@vkruglikov/react-telegram-web-app": "^2.1.9",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "crypto": "^1.0.1",
+    "leva": "^0.9.35",
+    "lucide-react": "^0.331.0",
     "next": "14.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwind-merge": "^2.2.1",
+    "tailwindcss-animate": "^1.0.7",
+    "telegram-webapps-types": "^1.0.5"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -25,6 +34,7 @@
     "framer-motion": "^11.0.5",
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
+    "telegram-webapps": "^7.0.0",
     "typescript": "^5"
   }
 }

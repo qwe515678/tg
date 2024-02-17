@@ -48,8 +48,7 @@ export default function Home() {
   useEffect(() => {
     // we use any here because there was ts thinks that window does not have Telegram value
     const chicaneryWindow: any = window
-    setName('qiwi')
-    // setName(chicaneryWindow.Telegram.WebApp.initDataUnsafe.user.username)
+    setName(chicaneryWindow.Telegram.WebApp.initDataUnsafe.user.username)
 
 
     const counter = parseInt(window.localStorage.getItem('counter') || '0', 10);

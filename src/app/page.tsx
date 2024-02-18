@@ -1,23 +1,19 @@
 "use client"
 import Image from "next/image";
-import { MouseEvent, useEffect, useId, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useTransform } from 'framer-motion';
+import { MouseEvent, useEffect, useState } from "react";
+import { AnimatePresence, motion } from 'framer-motion';
 import { Dispatch, SetStateAction } from "react";
 
 type Props = {
-  lastIncremented: Date,
+  lastIncremented: number,
   current: number,
-  setCurrent: Dispatch<SetStateAction<{
-    current: number;
-    max: number;
-    lastIncremented: Date;
-  }>>,
+  setCurrent: Dispatch<SetStateAction<LeftCoin>>,
   max: number
 }
 
 function increment(props: Props): NodeJS.Timeout {
   const interval = setInterval(() => {
-    const start = props.lastIncremented.getTime();
+    const start = props.lastIncremented;
 
     const now = new Date().getTime();
     const elapsedSeconds = Math.floor((now - start) / 3000);
@@ -26,7 +22,7 @@ function increment(props: Props): NodeJS.Timeout {
     console.log(props.max)
     if (elapsedSeconds > 0) {
       const newCurrent = props.current + elapsedSeconds;
-      props.setCurrent({ current: newCurrent > props.max ? props.max : newCurrent, max: props.max, lastIncremented: new Date() });
+      props.setCurrent({ current: newCurrent > props.max ? props.max : newCurrent, max: props.max, lastIncremented: new Date().getTime() });
     }
   }, 3000)
   return interval
@@ -38,18 +34,31 @@ type Number = {
   y: number,
 }
 
+
+type LeftCoin = {
+  current: number,
+  max: number,
+  lastIncremented: number
+}
 export default function Home() {
   const [counter, setCounter] = useState(0)
   const [name, setName] = useState<string>()
   const [numbers, setNumbers] = useState<Number[]>([])
-  const [leftCoins, setLeftCoins] = useState({ current: 1000, max: 1000, lastIncremented: new Date })
+  const [leftCoins, setLeftCoins] = useState<LeftCoin>(() => {
+    const savedCoins = window.localStorage.getItem('leftCoins');
+    if (savedCoins) {
+      return JSON.parse(savedCoins);
+    } else {
+      return { current: 1000, max: 1000, lastIncremented: new Date().getTime() };
+    }
+  });
+
 
 
   useEffect(() => {
     // we use any here because there was ts thinks that window does not have Telegram value
-    const chicaneryWindow: any = window
-    setName(chicaneryWindow.Telegram.WebApp.initDataUnsafe.user.username)
-
+    // const chicaneryWindow: any = window
+    // setName(chicaneryWindow.Telegram.WebApp.initDataUnsafe.user.username)
 
     const counter = parseInt(window.localStorage.getItem('counter') || '0', 10);
     setCounter(counter);
@@ -62,13 +71,13 @@ export default function Home() {
       });
     }, 300)
 
-
   }, []);
   useEffect(() => {
+    window.localStorage.setItem('leftCoins', JSON.stringify(leftCoins));
     const interval = increment({ lastIncremented: leftCoins.lastIncremented, current: leftCoins.current, setCurrent: setLeftCoins, max: leftCoins.max });
     // Clear the interval when the component unmounts or when dependencies change
     return () => clearInterval(interval)
-  }, [setLeftCoins, leftCoins]);
+  }, [leftCoins]);
 
 
   useEffect(() => {
@@ -79,16 +88,18 @@ export default function Home() {
 
 
   const handleClick = (e: MouseEvent) => {
-    if (leftCoins.current > 0) setCounter((prevCounter) => prevCounter + 1);
-    setNumbers((prevNumbers) => [...prevNumbers, { x: e.clientX, y: e.clientY }]);
-    setLeftCoins((prevCoins) => {
-      return { max: prevCoins.max, current: prevCoins.current - 1, lastIncremented: prevCoins.lastIncremented }
-    })
+    if (leftCoins.current > 0) {
+      setCounter((prevCounter) => prevCounter + 1);
+      setNumbers((prevNumbers) => [...prevNumbers, { x: e.clientX, y: e.clientY }]);
+      setLeftCoins((prevCoins) => {
+        return { max: prevCoins.max, current: prevCoins.current - 1, lastIncremented: prevCoins.lastIncremented }
+      })
+    }
   };
   return (
 
     <div className="flex justify-center items-center  flex-col gap-5">
-      <p className="text-center py-4 px-2 font-bold w-full text-2xl">Welcome{', ' + name}!</p>
+      <p className="text-center py-4 px-2 font-bold w-full text-2xl">Welcome{name && ', ' + name}!</p>
       <Image src={'/shadow2.svg'} width={600} height={600} alt="" className="absolute top-0 left-0 " />
       <AnimatePresence>
         {numbers.map((number, i) => {
@@ -96,8 +107,8 @@ export default function Home() {
             <motion.div
               key={String(i) + JSON.stringify(number)}
               initial={{ opacity: 1, left: number.x, top: number.y }}
-              exit={{ opacity: 0, translateY: -50 }}
-              transition={{ duration: 1, ease: 'easeInOut' }}
+              exit={{ opacity: 0, translateY: '-60px' }}
+              transition={{ duration: 0.5, ease: 'easeInOut' }}
               className="absolute z-[100] text-3xl  select-none pointer-events-none">1</motion.div>
           )
         })}
@@ -126,5 +137,3 @@ export default function Home() {
     </div >
   );
 }
-
-

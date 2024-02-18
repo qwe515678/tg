@@ -11,6 +11,10 @@ type Props = {
   max: number
 }
 
+const uid = function () {
+  return Date.now().toString(36) + Math.random().toString(36);
+}
+
 function increment(props: Props): NodeJS.Timeout {
   const interval = setInterval(() => {
     const start = props.lastIncremented;
@@ -32,6 +36,7 @@ function increment(props: Props): NodeJS.Timeout {
 type Number = {
   x: number,
   y: number,
+  id: string
 }
 
 
@@ -67,12 +72,12 @@ export default function Home() {
     setCounter(counter);
     const intervalId: NodeJS.Timeout = setInterval(() => {
       setNumbers((currentNumbers) => {
-        if (currentNumbers.length > 0) {
+        if (currentNumbers.length > 1) {
           return currentNumbers.slice(1);
         }
         return currentNumbers;
       });
-    }, 300)
+    }, 100)
 
   }, []);
   useEffect(() => {
@@ -93,7 +98,7 @@ export default function Home() {
   const handleClick = (e: MouseEvent) => {
     if (leftCoins.current > 0) {
       setCounter((prevCounter) => prevCounter + 1);
-      setNumbers((prevNumbers) => [...prevNumbers, { x: e.clientX, y: e.clientY }]);
+      setNumbers((prevNumbers) => [...prevNumbers, { x: e.clientX, y: e.clientY, id: uid() }]);
       setLeftCoins((prevCoins) => {
         return { max: prevCoins.max, current: prevCoins.current - 1, lastIncremented: prevCoins.lastIncremented }
       })
@@ -108,10 +113,11 @@ export default function Home() {
         {numbers.map((number, i) => {
           return (
             <motion.div
-              key={String(i) + JSON.stringify(number)}
+              key={number.id}
               initial={{ opacity: 1, left: number.x, top: number.y }}
-              exit={{ opacity: 0, translateY: '-60px' }}
-              transition={{ duration: 0.5, ease: 'easeInOut' }}
+              animate={{ opacity: 0, translateY: -90 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
               className="absolute z-[100] text-3xl  select-none pointer-events-none">1</motion.div>
           )
         })}

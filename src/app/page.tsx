@@ -45,6 +45,9 @@ export default function Home() {
   const [name, setName] = useState<string>()
   const [numbers, setNumbers] = useState<Number[]>([])
   const [leftCoins, setLeftCoins] = useState<LeftCoin>(() => {
+    if (typeof window === 'undefined') {
+      return { current: 1000, max: 1000, lastIncremented: new Date().getTime() }
+    }
     const savedCoins = window.localStorage.getItem('leftCoins');
     if (savedCoins) {
       return JSON.parse(savedCoins);

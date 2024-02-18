@@ -9,4 +9,4 @@
 - how recreate this distinct (for clicker games) effect of flying number on click in react
 - handling energy recovering with ```increment``` function 
 
-([demo](https://t.me/WebCoin_test_bot))
+[demo](https://t.me/WebCoin_test_bot)
